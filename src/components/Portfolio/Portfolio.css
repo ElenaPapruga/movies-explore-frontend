@@ -1,0 +1,133 @@
+.portfolio {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-width: 1140px;
+  padding: 0 70px 125px;
+  background-color: #ffffff;
+}
+
+.portfolio__title {
+  display: flex;
+  max-width: 1140px;
+  margin: 0;
+  padding-bottom: calc(50px - 20px);
+  font-family: "Inter", Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 20px;
+  color: #a0a0a0;
+}
+
+.portfolio__links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1140px;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.portfolio_card {
+  width: 100%;
+}
+
+.portfolio__link {
+  text-decoration: none;
+  font-family: "Inter", Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 50px;
+  letter-spacing: -0.04em;
+  color: #000000;
+}
+
+.portfolio__link:hover {
+  opacity: 0.7;
+}
+
+.portfolio__link-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  border: none;
+  width: 100%;
+  padding: 20px 0 19px;
+  border-bottom: 1px solid #e8e8e8;
+  background-color: #ffffff;
+  color: #000000;
+  cursor: pointer;
+}
+
+.portfolio__strelka {
+  width: 27px;
+  height: 50px;
+}
+.portfolio__noborder {
+  border-bottom: none;
+}
+
+@media screen and (max-width: 1023px) {
+  .portfolio {
+    max-width: 668px;
+    padding: 0 50px 90px;
+    margin: 0 auto;
+  }
+
+  .portfolio__title {
+    padding-bottom: 20px;
+    font-size: 14px;
+  }
+
+  .portfolio__links {
+    max-width: 668px;
+  }
+
+  .portfolio__link {
+    font-size: 28px;
+  }
+
+  .portfolio_card {
+    max-width: 668px;
+  }
+
+  .portfolio__strelka {
+    width: 27px;
+    height: 50px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .portfolio {
+    max-width: 292px;
+    padding: 0 14px 70px;
+  }
+
+  .portfolio__links {
+    display: flex;
+    justify-content: center;
+    max-width: 292px;
+  }
+
+  .portfolio_card {
+    max-width: 288px;
+  }
+
+  .portfolio__link-button {
+    padding-bottom: 19px;
+  }
+
+  .portfolio__link {
+    font-size: 18px;
+    line-height: 28px;
+  }
+
+  .portfolio__strelka {
+    width: 18px;
+    height: 28px;
+  }
+}

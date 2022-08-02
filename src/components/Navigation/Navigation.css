@@ -1,0 +1,130 @@
+.navigate {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  right: 0;
+  top: 0;
+  position: fixed;
+  visibility: hidden;
+  opacity: 0;
+  transition: all ease 1s;
+  z-index: 8;
+}
+
+.navigate__opened {
+  visibility: visible;
+  opacity: 1;
+}
+
+.navigate__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 520px;
+  height: 100vh;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 15;
+  background-color: #ffffff;
+}
+
+.navigate__close-button {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background: transparent url("../../images/close.svg") no-repeat center center;
+  border: none;
+  float: right;
+  right: 22px;
+  top: 22px;
+  cursor: pointer;
+}
+
+.navigate__close-button:hover {
+  opacity: 0.7;
+}
+
+.navigate__links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  list-style-type: none;
+  margin: 0 auto 0 auto;
+  padding: 159px 0 0 0;
+}
+
+.navigate__link {
+  text-align: center;
+  font-family: "Inter", Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  padding-bottom: 4px;
+  color: #000000;
+  cursor: pointer;
+  text-decoration: none;
+  z-index: 88;
+}
+
+.navigate__link:hover {
+  opacity: 0.7;
+}
+
+.navigate__link:first-of-type {
+  margin-bottom: 24px;
+}
+
+.navigate__link:last-of-type {
+  margin-top: 24px;
+}
+.navigate__link_active {
+  border-bottom: 2px solid #000000;
+}
+
+.navigate__profile-button {
+  width: 100px;
+  height: 32px;
+  background: #f9f9f9;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  line-height: 16px;
+  margin-bottom: 90px;
+  cursor: pointer;
+}
+
+.navigate__profile-button {
+  opacity: 0.7;
+}
+
+@media screen and (max-width: 767px) {
+  .navigate__wrapper {
+    width: 320px;
+  }
+
+  .login__logo-link {
+    display: flex;
+    justify-content: center;
+  }
+
+  .navigate__close-button {
+    right: 13px;
+    top: 13px;
+  }
+
+  .navigate__links {
+    padding: 144px 0 0 0;
+  }
+
+  .navigate__link {
+    padding-bottom: 7px;
+  }
+
+  .navigate__profile-button {
+    margin-bottom: 46px;
+  }
+}

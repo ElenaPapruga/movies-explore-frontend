@@ -4,7 +4,6 @@ import React from "react";
 import "./MoviesCardList.css";
 import MoviesCard from "../MoviesCard/MoviesCard";
 import { Route, Switch } from "react-router-dom";
-import PropTypes from 'prop-types';
 
 function MoviesCardList({ movies, changeFilterValue, removeMoviesFunction, newCard, handleMovieLike, addedNewCard, counterCard, addedMovie, removeMovie }) {
   return (
@@ -47,22 +46,5 @@ function MoviesCardList({ movies, changeFilterValue, removeMoviesFunction, newCa
     </section>
   );
 }
-
-MoviesCardList.propTypes = {
-  movie: PropTypes.shape({
-    movieId: PropTypes.number.isRequired,
-  }),
-  duration: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
-  nameRU: PropTypes.string.isRequired,
-  addedNewCard: PropTypes.func.isRequired,
-  handleMovieLike: PropTypes.func.isRequired,
-  changeFilterValue: PropTypes.func.isRequired,
-  removeMoviesFunction: PropTypes.func.isRequired,
-  counterCard: PropTypes.func.isRequired,
-  removeMovi: PropTypes.func.isRequired,
-  addedMovie: PropTypes.func.isRequired,
-}
-
 
 export default MoviesCardList;

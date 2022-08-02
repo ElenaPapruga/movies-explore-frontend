@@ -2,26 +2,25 @@ import "./MoviesCard.css";
 import React from 'react';
 // import preview from "../../images/film1.svg";
 import { Route, Switch } from "react-router-dom";
-import PropTypes from 'prop-types';
 
 
-function MoviesCard(nameRU, duration, movie, image, ...props) {
+function MoviesCard(props) {
   return (
     <div className="movies-card">
       <div className="movies-card__wrapper">
         <div className="movie-card__info">
-          <div className="movies-card__name">{nameRU}</div>
-          <p className="movies-card__time">{duration}</p>
+          <div className="movies-card__name">{props.nameRU}</div>
+          <p className="movies-card__time">{props.duration}</p>
         </div>
         <div>
           <Switch>
             <Route path='/movies'>
               <button
                 onClick={() => {
-                  !props.handleMovieLike(movie) ? props.addedMovie(movie) : props.removeMovie(movie);
+                  !props.handleMovieLike(props.movie) ? props.addedMovie(props.movie) : props.removeMovie(props.movie);
                 }}
                 className={
-                  !props.handleMovieLike(movie)
+                  !props.handleMovieLike(props.movie)
                     ? 'movies-card__save-button movies-card__save-button'
                     : 'movies-card__save-button movies-card__save-button_active'
                 }
@@ -30,7 +29,7 @@ function MoviesCard(nameRU, duration, movie, image, ...props) {
             </Route>
             <Route path='/saved-movies'>
               <button
-                onClick={() => props.removeMovie(movie)}
+                onClick={() => props.removeMovie(props.movie)}
                 className='movies-card__save-button movies-card__delete-button'
                 type='button'
               ></button>
@@ -38,16 +37,10 @@ function MoviesCard(nameRU, duration, movie, image, ...props) {
           </Switch>
         </div>
       </div>
-      <img className="movies-card__images" alt="Прекрасный фильм" src={image} />
+      <a href={props.trailer} target="_blank" rel="noreferrer"></a>
+      <img className="movies-card__images" alt="Прекрасный фильм" src={props.image} />
     </div>
   );
-}
-
-MoviesCard.propTypes = {
-  duration: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
-  movie: PropTypes.string.isRequired,
-  nameRU: PropTypes.string.isRequired,
 }
 
 export default MoviesCard;

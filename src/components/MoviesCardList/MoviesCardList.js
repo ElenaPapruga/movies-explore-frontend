@@ -25,7 +25,7 @@ function MoviesCardList({ movies, changeFilterValue, removeMoviesFunction, newCa
         })}
       </div>
       <Switch>
-        <Route path='/movies'>movies-card-list__button-hidden
+        <Route path='/movies'>
           {movies?.length > counterCard + newCard && (
             <button onClick={() => addedNewCard()} className='movies-card-list__button' type='button'>
               {' '}

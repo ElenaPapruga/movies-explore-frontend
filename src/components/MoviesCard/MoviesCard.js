@@ -5,12 +5,25 @@ import { Route, Switch } from "react-router-dom";
 
 
 function MoviesCard(props) {
+
+  const parseDuration = () => {
+    let hours;
+    let minutes;
+    hours = Math.trunc(props.movie.duration / 60)
+    minutes = props.movie.duration % 60
+    if (props.movie.duration > 59 && minutes !== 0) {
+      return `${hours}ч ${minutes}мин`
+    } else if (props.movie.duration > 59 && minutes === 0) {
+      return `${hours}ч`
+    } else return `${minutes}мин`
+  }
+
   return (
     <div className="movies-card">
       <div className="movies-card__wrapper">
         <div className="movie-card__info">
           <div className="movies-card__name">{props.nameRU}</div>
-          <p className="movies-card__time">{props.duration}</p>
+          <p className="movies-card__time">{parseDuration()}</p>
         </div>
         <div>
           <Switch>

@@ -5,7 +5,6 @@ import { useEffect, useState, useContext } from "react";
 import "./Profile.css";
 import Header from "../Header/Header";
 import { IngredientsContext } from "../../services/IngredientsContext";
-import Preloader from "../Preloader/Preloader";
 import api from "../../utils/MainApi";
 
 function Profile(props) {
@@ -71,9 +70,6 @@ function Profile(props) {
   return (
     <>
       <Header loggedIn={props.loggedIn} />
-      {props.isLoading ? (
-        <Preloader />
-      ) : (
         <section className="profile">
           <div className="profile__container">
             <h3 className="profile__wellcome">Привет, Друг!</h3>
@@ -127,7 +123,6 @@ function Profile(props) {
             </form>
           </div>
         </section>
-      )}
     </>
   );
 }

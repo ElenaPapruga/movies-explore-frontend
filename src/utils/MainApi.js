@@ -70,9 +70,9 @@ class MainApi {
   };
 
   // Добавление фильма //
-  createMovie = (data) => {
-    const token = localStorage.getItem("jwt");
-    return fetch(`${this._url}/movies`, {
+	createMovie = (data) => {
+		const token = localStorage.getItem('jwt');
+		return fetch(`${this._url}/movies`, {
       method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -91,10 +91,9 @@ class MainApi {
         movieId: data.movieId,
         nameRU: data.nameRU,
         nameEN: data.nameEN,
-      })
-    })
-      .then(this._checkResponse)
-  };
+			}),
+		}).then(this._checkResponse);
+	};
 
   // Удалить фильм //
   deleteMovie = (movieId) => {

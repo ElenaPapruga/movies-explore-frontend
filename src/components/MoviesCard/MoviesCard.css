@@ -1,5 +1,6 @@
 .movies-card {
   max-width: 364px;
+  margin: 0 auto;
 }
 
 .movies-card__wrapper {
@@ -18,7 +19,11 @@
 }
 
 .movies-card__name {
-  max-width: 280px;
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 0;
+  width: 280px;
+  height: 37px;
   margin-left: 0;
   font-family: "Inter", "Helvetica", "Arial", sans-serif;
   font-style: normal;
@@ -34,7 +39,7 @@
   font-weight: 400;
   font-size: 11px;
   line-height: 13.31px;
-  max-width: 37px;
+  max-width: 50px;
   margin: 0;
   color: #a0a0a0;
 }

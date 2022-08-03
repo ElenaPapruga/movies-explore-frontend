@@ -50,7 +50,7 @@
   font-weight: 400;
   font-size: 11px;
   line-height: 13px;
-  color: #fff;
+  color: #000000;
   text-align: right;
 }
 
@@ -59,7 +59,7 @@
 }
 
 .profile__input:focus {
-  background-color: #2f2f2f;
+  background-color: #F9F9F9;
 }
 
 .profile__input-error {

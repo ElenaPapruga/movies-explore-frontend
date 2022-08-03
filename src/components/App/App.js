@@ -23,6 +23,9 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+    //храним все фильмы в стейте movies
+    const [movies, setMovies] = useLocalStorage("all_movies", []);
+
   useEffect(() => {
     if (loggedIn === true) {
       history.push('/movies');
@@ -146,9 +149,40 @@ function App() {
   };
 
   // Функция лайка карточки //
+  // function handleMovieLike(movie) {
+  //   return saveMoviesAction.some((savedMovie) => savedMovie.movieId === movie.movieId);
+  // };
+////////////////
+  //МЕСТО переделанный Функция лайка карточки
   function handleMovieLike(movie) {
-    return saveMoviesAction.some((savedMovie) => savedMovie.movieId === movie.movieId);
+    // Снова проверяем, есть ли уже лайк на этой карточке
+    const isLiked = movie.likes.some((i) => i === currentUser._id);
+    // Отправляем запрос в API и получаем обновлённые данные карточки
+    api.setLike(movie._id, !isLiked)
+      .then((newCard) => {
+        setMovies((state) => state.map((c) => c._id === movie._id ? newCard : c));
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   };
+///////////////////
+
+    //ИСХОДНИК-МЕСТО Функция лайка карточки
+    // function handleCardLike(card) {
+    //   // Снова проверяем, есть ли уже лайк на этой карточке
+    //   const isLiked = card.likes.some((i) => i === currentUser._id);
+    //   // Отправляем запрос в API и получаем обновлённые данные карточки
+    //   api.setLike(card._id, !isLiked)
+    //     .then((newCard) => {
+    //       setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     })
+    // };
+
+
   // Сохраненные фильмы в локалсторидж
   const [saveMoviesAction, setSaveMoviesAction] = useLocalStorage(
     "save_movies_action",
@@ -173,8 +207,6 @@ function App() {
     (width >= 768 && width < 1280 && 2) || // Кнопка «Ещё» загружает по 2 карточки.
     (width >= 320 && width < 768 && 1) // Кнопка «Ещё» загружает 1 карточку.
 
-  //храним все фильмы в стейте movies
-  const [movies, setMovies] = useLocalStorage("all_movies", []);
 
   // Добавление новых фильмов через кнопку Еще //
   function addedNewCard() {
@@ -191,26 +223,27 @@ function App() {
     setIsLoading(true);
     const res = await getMovies();
     setIsLoading(false);
-    const allMovies = res.map((data) => {
-      const imageUrl = data.image
-        ? `https://api.nomoreparties.co${data.image.url}`
+    const allMovies = res.map((item) => {
+      const imageUrl = item.image
+        ? `https://api.nomoreparties.co${item.image.url}`
         : "https://upload.wikimedia.org/wikipedia/commons/9/9a/%D0%9D%D0%B5%D1%82_%D1%84%D0%BE%D1%82%D0%BE.png";
-      const thumbnailUrl = data.image
-        ? `https://api.nomoreparties.co${data.image.formats.thumbnail.url}`
+      const thumbnailUrl = item.image
+        ? `https://api.nomoreparties.co${item.image.formats.thumbnail.url}`
         : "https://upload.wikimedia.org/wikipedia/commons/9/9a/%D0%9D%D0%B5%D1%82_%D1%84%D0%BE%D1%82%D0%BE.png";
-      const unadaptedName = !data.nameEN ? data.nameRU : data.nameEN
-      const countryText = !data.country ? 'none' : data.country;
+      
+      const unadaptedName = item.nameEN ? item.nameEN : item.nameRU;
+      const countryText = item.country ? item.country : 'none';
       return {
         country: countryText,
-        director: data.director,
-        duration: data.duration,
-        year: data.year,
-        description: data.description,
+        director: item.director,
+        duration: item.duration,
+        year: item.year,
+        description: item.description,
         image: imageUrl,
-        trailer: data.trailerLink,
+        trailer: item.trailerLink,
         thumbnail: thumbnailUrl,
-        movieId: data.id,
-        nameRU: data.nameRU,
+        movieId: item.id,
+        nameRU: item.nameRU,
         nameEN: unadaptedName,
       };
     });

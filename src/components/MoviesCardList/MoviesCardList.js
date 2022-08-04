@@ -5,34 +5,35 @@ import "./MoviesCardList.css";
 import MoviesCard from "../MoviesCard/MoviesCard";
 import { Route, Switch } from "react-router-dom";
 
-function MoviesCardList(props) {
+function MoviesCardList({ movies, changeFilterValue, removeMoviesFunction, newCard, handleMovieLike, addedNewCard, counterCard, addedMovie, removeMovie,  }) {
   return (
     <section className="movies-card-list">
       <div className="movies-card-list__elements">
-        {props.movies?.slice(0, props.counterCard + props.newCard).map((movie, i) => {
+        {movies?.slice(0, counterCard + newCard).map((movie, i) => {
           return (
             <MoviesCard
               movie={movie}
-              handleMovieLike={props.handleMovieLike}
+              handleMovieLike={handleMovieLike}
               key={movie.movieId}
               {...movie}
-              changeFilterValue={props.changeFilterValue}
-              removeMoviesFunction={props.removeMoviesFunction}
-              removeMovie={props.removeMovie}
-              addedMovie={props.addedMovie}
+              changeFilterValue={changeFilterValue}
+              removeMoviesFunction={removeMoviesFunction}
+              removeMovie={removeMovie}
+              addedMovie={addedMovie}
             />
           );
         })}
       </div>
       <Switch>
         <Route path='/movies'>
-          {props.movies?.length > props.counterCard + props.newCard && (
-            <button onClick={() => props.addedNewCard()} className='movies-card-list__button' type='button'>Ещё</button>
+          {movies?.length > counterCard + newCard && (
+            <button onClick={() => addedNewCard()} className='movies-card-list__button' type='button'>Ещё</button>
           )}
         </Route>
         <Route path='/saved-movies'>
-          {props.movies?.length > props.counterCard + props.newCard && (
-            <button onClick={() => props.addedNewCard()} className='movies-card-list__button' type='button'>Ещё</button>
+          {movies?.length > counterCard + newCard && (
+            <button onClick={
+              () => addedNewCard()} className='movies-card-list__button' type='button'>Ещё</button>
           )}
         </Route>
       </Switch>

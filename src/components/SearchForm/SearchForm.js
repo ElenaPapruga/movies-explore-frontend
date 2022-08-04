@@ -2,30 +2,31 @@ import React from "react";
 import "./SearchForm.css";
 // import { useEffect, useState } from "react";
 
-function SearchForm(props) {
+function SearchForm({ value, setChecked, checked, submitFindByNameFilm, setValue, setShowError }) {
+
   return (
     <section className="search">
       <div className="search__wrapper">
         <form className="search__form">
           <div className="search__image-lupa"></div>
-          <input className="search__input" type="text" name="keyword" placeholder='Фильм' minLength="2" maxLength="200" required value={props.value}
+          <input className="search__input" type="text" name="keyword" placeholder='Фильм' minLength="2" maxLength="200" required value={value}
             onChange={(event) => {
-              props.setValue(event.currentTarget.value);
-              props.setShowError("");
+              setValue(event.currentTarget.value);
+              setShowError("");
             }}
           />
           <button className="search__button" type="submit"
             onClick={(event) => {
               event.preventDefault();
-              props.submitFindByNameFilm(props.value);
+              submitFindByNameFilm(value);
             }}
           ></button>
         </form>
         <div className="search__filter">
           <input type="checkbox" className="search__checkbox" name="filter__film"
-            checked={props.checked}
+            checked={checked}
             onChange={() => {
-              props.setChecked(!props.checked);
+              setChecked(!checked);
             }}
           />
           <p className="search__text">Короткометражки </p>

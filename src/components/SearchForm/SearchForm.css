@@ -177,7 +177,6 @@
   margin-right: 30px;
   cursor: pointer;
   transition: opacity 0.2s linear;
-  margin-left: 10px;
 }
 
 .search__button:hover {

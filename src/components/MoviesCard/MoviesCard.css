@@ -19,11 +19,8 @@
 }
 
 .movies-card__name {
-  display: flex;
-  justify-content: flex-start;
   padding-left: 0;
-  width: 280px;
-  height: 37px;
+  max-width: 280px;
   margin-left: 0;
   font-family: "Inter", "Helvetica", "Arial", sans-serif;
   font-style: normal;

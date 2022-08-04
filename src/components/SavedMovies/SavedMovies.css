@@ -5,10 +5,6 @@
     justify-content: center;
 }
 
-.saved-movies-err {
-  text-align: 'center';
-}
-
 @media screen and (max-width: 767px) {
     .saved-movies {
         min-height: calc(100vh - 570px);

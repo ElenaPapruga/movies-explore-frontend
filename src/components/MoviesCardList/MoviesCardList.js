@@ -5,35 +5,42 @@ import "./MoviesCardList.css";
 import MoviesCard from "../MoviesCard/MoviesCard";
 import { Route, Switch } from "react-router-dom";
 
-function MoviesCardList({ movies, changeFilterValue, removeMoviesFunction, newCard, handleMovieLike, addedNewCard, counterCard, addedMovie, removeMovie,  }) {
+function MoviesCardList(props) {
   return (
     <section className="movies-card-list">
       <div className="movies-card-list__elements">
-        {movies?.slice(0, counterCard + newCard).map((movie, i) => {
+        {props.movies?.slice(0, props.counterCard + props.newCard).map((movie, i) => {
           return (
             <MoviesCard
               movie={movie}
-              handleMovieLike={handleMovieLike}
+              handleMovieLike={props.handleMovieLike}
               key={movie.movieId}
               {...movie}
-              changeFilterValue={changeFilterValue}
-              removeMoviesFunction={removeMoviesFunction}
-              removeMovie={removeMovie}
-              addedMovie={addedMovie}
+              changeFilterValue={props.changeFilterValue}
+              removeMoviesFunction={props.removeMoviesFunction}
+              removeMovie={props.removeMovie}
+              addedMovie={props.addedMovie}
             />
           );
         })}
       </div>
       <Switch>
         <Route path='/movies'>
-          {movies?.length > counterCard + newCard && (
-            <button onClick={() => addedNewCard()} className='movies-card-list__button' type='button'>Ещё</button>
+          {props.movies?.length > props.counterCard + props.newCard && (
+            <button
+              onClick={() => props.addedNewCard()}
+              className='movies-card-list__button'
+              type='button'
+            >Ещё</button>
           )}
         </Route>
         <Route path='/saved-movies'>
-          {movies?.length > counterCard + newCard && (
-            <button onClick={
-              () => addedNewCard()} className='movies-card-list__button' type='button'>Ещё</button>
+          {props.movies?.length > props.counterCard + props.newCard && (
+            <button
+              onClick={() => props.addedNewCard()}
+              className='movies-card-list__button'
+              type='button'
+            >Ещё</button>
           )}
         </Route>
       </Switch>

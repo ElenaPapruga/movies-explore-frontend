@@ -5,19 +5,17 @@ import { useEffect, useState, useContext } from "react";
 import "./Profile.css";
 import Header from "../Header/Header";
 import { IngredientsContext } from "../../services/IngredientsContext";
-import Preloader from "../Preloader/Preloader";
-import api from "../../utils/MainApi";
+import api from "../../utils/MainApi"
 
 function Profile(props) {
   const currentUser = useContext(IngredientsContext);
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-  });
+  const [user, setUser] = useState({ name: "", email: "" });
+
   const [name, setName] = useState(user.name);
-  const [errors, setErrors] = useState({});
   const [email, setEmail] = useState(user.email);
+
   const [isValid, setIsValid] = useState(false);
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     setName(currentUser.name);
@@ -25,29 +23,24 @@ function Profile(props) {
   }, [currentUser]);
 
   useEffect(() => {
-    const token = localStorage.getItem("jwt");
+    const token = localStorage.getItem('jwt');
     if (token) {
-      api.getApiUserInfo(token).then((res) => {
-        props.setIsLoading(false);
-        if (res) {
-          setUser({
-            name: res.user.name,
-            email: res.user.email,
-          });
-          setName(res.user.name);
-          setEmail(res.user.email);
-        }
-      });
+      api.getApiUserInfo(token)
+        .then((res) => {
+          props.setIsLoading(false);
+          if (res) {
+            setUser({ name: res.user.name, email: res.user.email });
+            setName(res.user.name);
+            setEmail(res.user.email);
+          }
+        })
     }
-  }, [props, props.isLoading]);
+  }, [props.isLoading]);
 
   function handleSubmit(event) {
     event.preventDefault();
     if (name === user.name && email === user.email) return;
-    props.onEditProfile({
-      name: name,
-      email: email,
-    });
+    props.onEditProfile({ name: name, email: email })
   }
 
   function handleName(event) {
@@ -56,7 +49,7 @@ function Profile(props) {
     const name = target.name;
     setName(event.target.value);
     setErrors({ ...errors, [name]: target.validationMessage });
-    setIsValid(event.target.closest("form").checkValidity());
+    setIsValid(event.target.closest('form').checkValidity());
   }
 
   function handleEmail(event) {
@@ -64,70 +57,68 @@ function Profile(props) {
     const target = event.target;
     const name = target.name;
     setErrors({ ...errors, [name]: target.validationMessage });
-    setIsValid(event.target.closest("form").checkValidity());
+    setIsValid(event.target.closest('form').checkValidity());
     setEmail(event.target.value);
   }
 
   return (
     <>
       <Header loggedIn={props.loggedIn} />
-      {props.isLoading ? (
-        <Preloader />
-      ) : (
-        <section className="profile">
-          <div className="profile__container">
-            <h3 className="profile__wellcome">Привет, Друг!</h3>
-            <form className="profile__edit-form" onSubmit={handleSubmit}>
-              <label className="profile__unit">
-                Имя
-                <input
-                  className="profile__input"
-                  name='name'
-                  type="text"
-                  placeholder='Имя'
-                  value={name || ""}
-                  onChange={handleName}
-                  pattern="[а-яА-Яa-zA-ZёË\- ]{1,}"
-                />
-              </label>
-              <span className="profile__input-error">{errors.name}</span>
-              <hr className="profile__meredian" />
-              <label className="profile__unit">
-                Почта
-                <input
-                  className="profile__input"
-                  name='email'
-                  type="email"
-                  placeholder='Email'
-                  value={email || ''}
-                  onChange={handleEmail}
-                />
-              </label>
-              <span className="profile__input-error">{errors.email}</span>
-              <div className="profile__buttons-container">
-                <button
-                  type="submit"
-                  className={
-                    isValid
-                      ? "profile__button"
-                      : "profile__button profile__button_invalid"
-                  }
-                  disabled={!isValid}
-                >
-                  Редактировать
-                </button>
-                <button
-                  type="button"
-                  className="profile__button profile__button_logout"
-                  onClick={props.onSignOut}
-                >
-                  Выйти из аккаунта
-                </button>
-              </div>
-            </form>
-          </div>
-        </section>
-      )}
+      <section className="profile">
+        <div className="profile__container">
+          <h3 className="profile__wellcome">Привет, Друг!</h3>
+          <form
+            className="profile__edit-form"
+            onSubmit={handleSubmit}>
+            <label className="profile__unit">
+              Имя
+              <input
+                className="profile__input"
+                name='name'
+                type="text"
+                placeholder='Имя'
+                value={name || ""}
+                onChange={handleName}
+                pattern="[а-яА-Яa-zA-ZёË\- ]{1,}"
+              />
+            </label>
+            <span className="profile__input-error">{errors.name}</span>
+            <hr className="profile__meredian" />
+            <label className="profile__unit">
+              Почта
+              <input
+                className="profile__input"
+                name='email'
+                type="email"
+                placeholder='Email'
+                value={email || ''}
+                onChange={handleEmail}
+              />
+            </label>
+            <span className="profile__input-error">{errors.email}</span>
+            <div className="profile__buttons-container">
+              <button
+                type="submit"
+                className={
+                  isValid
+                    ? "profile__button"
+                    : "profile__button profile__button_invalid"
+                }
+                disabled={!isValid}
+              >
+                Редактировать
+              </button>
+              <button
+                type="button"
+                className="profile__button profile__button_logout"
+                onClick={props.onSignOut}
+              >
+                Выйти из аккаунта
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
     </>
   );
 }

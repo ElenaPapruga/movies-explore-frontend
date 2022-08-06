@@ -48,8 +48,9 @@ function MoviesCard(props) {
           </Switch>
         </div>
       </div>
-      <a href={props.trailer} target="_blank" rel="noreferrer"></a>
-      <img className="movies-card__images" alt="Прекрасный фильм" src={props.image} />
+      <a href={props.trailer} target="_blank" rel="noreferrer">
+        <img className="movies-card__images" alt="Прекрасный фильм" src={props.image} />
+      </a>
     </div>
   );
 }

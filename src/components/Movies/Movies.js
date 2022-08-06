@@ -6,15 +6,14 @@ import Footer from "../Footer/Footer";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
 import useLocalStorage from "../../services/useLocalStorage";
-import Preloader from "../Preloader/Preloader";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 function Movies(props) {
 
-  const [checked, setChecked] = useLocalStorage("checked", false);
-  const [shortMovies, setShortMovies] = useLocalStorage("short_movies", []);
+  const [checked, setChecked] = useLocalStorage("checked", false); // сеттер фильтрации короткометражки
+  const [shortMovies, setShortMovies] = useLocalStorage("short_movies", []); // фильтрация карточек из поискового стейта
 
-  useEffect(() => {
+  useEffect(() => { // управление фильтрацией карточек на тумблере
     return checked ? setShortMovies(props.showShortMovies(props.movies)) : setShortMovies(props.movies);
   }, [checked, props]);
 
@@ -27,31 +26,25 @@ function Movies(props) {
           setValue={props.setValue}
           checked={checked}
           setChecked={setChecked}
-          submitFindByNameFilm={props.submitFindByNameFilm}
+          submitSearchNameFilm={props.submitSearchNameFilm}
           setShowError={props.setShowError}
         />
-        {props.isLoading ? (
-          <Preloader />
-        ) : (
-          <div>
-            {props.showError && props.movies.length === 0 ? (
-              <h1 style={{ textAlign: 'center' }}>
-                {props.showError}
-              </h1>
-            ) : (
-              <MoviesCardList
-                movies={shortMovies}
-                newCard={props.newCard}
-                handleMovieLike={props.handleMovieLike}
-                changeFilterValue={props.changeFilterValue}
-                addedMovie={props.addedMovie}
-                removeMovie={props.removeMovie}
-                addedNewCard={props.addedNewCard}
-                counterCard={props.counterCard}
-              />
-            )}
-          </div>
-        )}
+        <div>
+          {props.showError && props.movies.length === 0 ? (
+            <h1 style={{ textAlign: "center" }}>{props.showError}</h1>
+          ) : (
+            <MoviesCardList
+              movies={shortMovies}
+              newCard={props.newCard}
+              handleMovieLike={props.handleMovieLike}
+              changeFilterValue={props.changeFilterValue}
+              addedMovie={props.addedMovie}
+              removeMovie={props.removeMovie}
+              addedNewCard={props.addedNewCard}
+              counterCard={props.counterCard}
+            />
+          )}
+        </div>
       </main>
       <Footer />
     </>

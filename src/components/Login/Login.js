@@ -6,7 +6,6 @@ import "./Login.css";
 import logo from "../../images/logo.svg";
 import { Redirect, Link } from "react-router-dom";
 import useFormValidation from "../../services/useFormValidation";
-import Preloader from '../Preloader/Preloader';
 
 function Login(props) {
   const { resetForm } = useFormValidation({});
@@ -48,9 +47,6 @@ function Login(props) {
     <div>
       {!props.loggedIn ? (
         <section className="login">
-          {props.isLoading ? (
-            <Preloader />
-          ) : (
             <div className="login__wrapper">
               <Link to="/" className='login__logo-link'>
                 <img className="login__logo" src={logo} alt="Логотип" />
@@ -103,8 +99,7 @@ function Login(props) {
                   <Link className="login__link" to="/signup">Регистрация</Link>
                 </p>
               </form>
-            </div>
-          )}
+            </div>      
         </section>
       ) : (
         <Redirect to="./" />

@@ -1,45 +1,39 @@
 // SavedMovies — компонент страницы с сохранёнными карточками фильмов
 
+import { useEffect } from 'react';
 import "./SavedMovies.css";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import useLocalStorage from '../../services/useLocalStorage';
-import { useEffect } from 'react';
-import Preloader from '../Preloader/Preloader';
 
 function SavedMovies(props) {
-  //состояние фильтрации короткометражки
-  const [checked, setChecked] = useLocalStorage('save_checked', false);
+  const [checked, setChecked] = useLocalStorage('save_checked', false); // сеттер для фильтрации короткого фильма
 
-  //локально фильтруем фильмы которые к нам идут из сохраненного стейта
-  const [shortMovies, setShortMovies] = useLocalStorage('save_short_movies', []);
+  const [shortMovies, setShortMovies] = useLocalStorage('save_short_movies', []); // фильрация карточек из сохраненного стейта
 
-  //при определенном флаге управляем фильтрацией фильмов
-  useEffect(() => {
+  useEffect(() => { // управление фильтрацией фильмов при тумблере
     return checked ? setShortMovies(props.showShortMovies(props.movies)) : setShortMovies(props.movies);
-  }, [checked, props, setShortMovies]);
+  }, [checked, props]);
 
   return (
     <>
       <Header loggedIn={props.loggedIn} />
       <main>
         <SearchForm
-          setChecked={setChecked}
           value={props.value}
           setValue={props.setValue}
           checked={checked}
-          findByNameFilm={props.findByNameFilm}
-          submitFindByNameFilm={props.submitFindByNameFilm}
+          setChecked={setChecked}
+          submitSearchNameFilm={props.submitSearchNameFilm}
           setShowError={props.setShowError}
+
+          findByNameFilm={props.findByNameFilm}
         />
-        {props.isLoading ? (
-          <Preloader />
-        ) : (
           <div>
             {props.showError && props.movies.length === 0 ? (
-              <h1 style={{ textAlign: 'center' }}>{props.showError}</h1>
+              <h1 className='saved-movies__err'>{props.showError}</h1>
             ) : (
               <MoviesCardList
                 handleMovieLike={props.handleMovieLike}
@@ -51,8 +45,7 @@ function SavedMovies(props) {
                 removeMovie={props.removeMovie}
               />
             )}
-          </div>
-        )}
+          </div>     
       </main>
       <Footer />
     </>

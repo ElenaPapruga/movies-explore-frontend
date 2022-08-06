@@ -1,8 +1,8 @@
 // Содержание описания запросов к нашему Api //
 class MainApi {
-  constructor(config) {
-    this._url = config.url;
-  };
+  constructor({ url }) {
+    this._url = url;
+  }
 
   // Проверка ответа //
   _checkResponse(res) {
@@ -139,10 +139,10 @@ class MainApi {
 
 // Экземпляр API
 const api = new MainApi({
-  url: "https://api.epapruga.nomoredomains.sbs",
-  headers: {
-    "content-type": "application/json"
-  }
-});
+  url: "https://api.epapruga.nomoredomains.sbs"
+  // headers: {
+  //   "content-type": "application/json"
+  // }
+})
 
 export default api;

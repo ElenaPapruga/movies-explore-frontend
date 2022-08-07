@@ -70,7 +70,7 @@ function Register(props) {
                   <input
                     className="register__input"
                     placeholder="Ваше имя"
-                    pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$" // Имя пользователя (с ограничением 2-20 символов, которыми могут быть буквы и цифры)
+                    pattern="^[а-яА-Яa-zA-ZёË\- ]{1,}" // Имя пользователя (с ограничением 1... символов)
                     name="Имя"
                     type="name"                    
                     value={name || ""}

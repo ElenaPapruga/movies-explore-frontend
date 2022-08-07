@@ -1,6 +1,5 @@
 import React from "react";
 import "./SearchForm.css";
-// import { useEffect, useState } from "react";
 
 function SearchForm(props) {
 

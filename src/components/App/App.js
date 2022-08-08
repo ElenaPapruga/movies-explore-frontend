@@ -75,7 +75,8 @@ function App() {
     handleTokenCheck();
   }, []);
 
-
+  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   // Регистрация ///
   function handleRegister({ name, email, password }) {
     setIsLoading(true);
@@ -89,10 +90,18 @@ function App() {
           }
         })
       .catch((err) => {
-        console.log(`Не удалось пройти регистрацию: ${err}`)
+        if (err.status === Number(409)) {
+          alert('Такой email уже существует')
+        } else if (err.status === Number(400)) {
+          alert('Не заполнено одно из полей')
+        }
+        setIsSuccess(false);
+      })
+      .finally(() => {
+        setIsInfoTooltipPopupOpen(true);
         setIsLoading(false);
       })
-  };
+  }
 
   // Функция входа ///
   function handleLogin({ email, password }) {
@@ -108,9 +117,17 @@ function App() {
           }
         })
       .catch((err) => {
+        setIsSuccess(false);
+        if (err.status === Number(400)) {
+          alert('Не заполнено одно из полей')
+        } else if (err.status === Number(401)) {
+          alert('Неправильно введен логин или пароль')
+        }
+      })
+      .finally(() => {
+        setIsInfoTooltipPopupOpen(true);
         setIsLoading(false);
-        console.log(err)
-      });
+      })
   };
 
   function signOut() { // функция выхода
@@ -171,9 +188,9 @@ function App() {
 
   // Добавление карточек для ряда
   const numberMoviesAdd =
-    (width >= 1280 && 3) || // Кнопка «Ещё» загружает по 3 карточки.
-    (width >= 768 && width < 1280 && 2) || // Кнопка «Ещё» загружает по 2 карточки.
-    (width >= 320 && width < 768 && 1) // Кнопка «Ещё» загружает 1 карточку.
+    (width >= 1280 && 30) || // Кнопка «Ещё» загружает по 3 карточки.
+    (width >= 768 && width < 1280 && 20) || // Кнопка «Ещё» загружает по 2 карточки.
+    (width >= 320 && width < 768 && 10) // Кнопка «Ещё» загружает 1 карточку.
 
   const [newCard, setNewCard] = useState(numberMoviesAdd); //// колличество новых фильмов - кнопка Еще
 
@@ -232,10 +249,6 @@ function App() {
     await api.createMovie(movie);
     takeFilm()
   };
-
-  useEffect(() => { //
-    takeFilm();
-  }, [isLoading]);
 
   useEffect(() => { //
     if (loggedIn) showAllMovies();

@@ -34,6 +34,9 @@ function Profile(props) {
             setEmail(res.user.email);
           }
         })
+        .catch((err) => {
+          console.error(`Ошибка: ${err}`);
+        });
     }
   }, [props.isLoading]);
 
@@ -44,7 +47,7 @@ function Profile(props) {
   }
 
   function handleName(event) {
-    if (event.target.value === user.name) return;
+    // if (event.target.value === user.name) return;
     const target = event.target;
     const name = target.name;
     setName(event.target.value);
@@ -53,7 +56,7 @@ function Profile(props) {
   }
 
   function handleEmail(event) {
-    if (event.target.value === user.email) return;
+    // if (event.target.value === user.email) return;
     const target = event.target;
     const name = target.name;
     setErrors({ ...errors, [name]: target.validationMessage });
@@ -66,7 +69,7 @@ function Profile(props) {
       <Header loggedIn={props.loggedIn} />
       <section className="profile">
         <div className="profile__container">
-          <h3 className="profile__wellcome">Привет, ${user.name}`</h3>
+          <h3 className="profile__wellcome">{`Привет, ${user.name}`}</h3>
           <form
             className="profile__edit-form"
             onSubmit={handleSubmit}>

@@ -24,6 +24,7 @@ function Movies(props) {
         <SearchForm
           value={props.value}
           setValue={props.setValue}
+          // showAllMovies={props.showAllMovies}
           checked={checked}
           setChecked={setChecked}
           submitSearchNameFilm={props.submitSearchNameFilm}

@@ -15,30 +15,36 @@ import api from "../../utils/MainApi";
 import { getMovies } from "../../utils/MoviesApi";
 import { useWindowSize } from '../../services/useWindowSize';
 import Preloader from '../Preloader/Preloader';
+import PropTypes from 'prop-types';
 
 function App() {
-  let location = useLocation().pathname; // путь пользователя //
-  const history = useHistory();
-
+  console.log("render");
   const [currentUser, setCurrentUser] = useState({ name: '', email: '' }); // сеттер текущего пользователя //
-  const [loggedIn, setLoggedIn] = useState(false); // сеттер залогиненного юзера //
+  console.log(currentUser);
   const [isLoading, setIsLoading] = useState(false); // сеттер загрузки //
 
+  let location = useLocation().pathname; // путь пользователя //
+
+  const [loggedIn, setLoggedIn] = useState(false); // сеттер залогиненного юзера //
+
+  // Сеттер хранения фильмов//
+  const [movies, setMovies] = useLocalStorage("all_movies", []);
+
   const [moviesAction, setMoviesAction] = useLocalStorage("movies_action", []); // для фильтрации фильмов //
-  const [value, setValue] = useLocalStorage("serach_value", "") // для  input по поиску
-  const [valueSave, setValueSave] = useLocalStorage("serach_value_save", ""); // для  input по поиску
+
+  // Сохраненные фильмы в локалсторидж //
+  const [saveMoviesAction, setSaveMoviesAction] = useLocalStorage(
+    "save_movies_action",
+    []
+  );
+
+  const history = useHistory();
 
   useEffect(() => {  // при регистрации переходим на страницу с фильмами //
     if (loggedIn === true) {
       history.push('/movies');
     }
   }, [loggedIn]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      handleTokenCheck();
-    }, 150);
-  }, [])
 
   // Проверка токена //
   function handleTokenCheck() {
@@ -83,7 +89,6 @@ function App() {
         (res) => {
           setIsLoading(false);
           if (res) {
-            console.log(email, password)
             handleLogin({ email, password });
           }
         })
@@ -112,9 +117,53 @@ function App() {
       });
   };
 
+  // Изменение информации о пользователе
+  function handleUpdateUser({ name, email }) {
+    localStorage.getItem("jwt");
+    setIsLoading(true);
+    api.patchUserInfo(name, email)
+      .then(
+        (res) => {
+          console.log("updateProfile", res);
+          setCurrentUser({ _id: res._id, name: res.name, email: res.email });
+          setIsLoading(false);
+          alert(`Данные изменены!`)
+        })
+      .catch((event) => {
+        console.log(`Ошибка в изменении данных пользователя: ${event}`);
+        setIsLoading(false);
+      });
+  };
+  //////////////////////////////////////////
+  // Хук width следит за шириной экрана
+  const { width } = useWindowSize();
+
+  // Ошибка поиска
+  const [showError, setShowError] = useState("");
+
+  // Количество отображаемых карточек
+  const counterCard =
+    (width >= 1280 && 12) ||  // 12 карточек по 3 в ряд
+    (width >= 768 && width < 1280 && 8) ||  // 8 карточек по 2 в ряд
+    (width >= 320 && width < 768 && 5); //  5 карточек по 1 в ряд
+
+  // Добавление карточек для ряда
+  const numberMoviesAdd =
+    (width >= 1280 && 3) || // Кнопка «Ещё» загружает по 3 карточки.
+    (width >= 768 && width < 1280 && 2) || // Кнопка «Ещё» загружает по 2 карточки.
+    (width >= 320 && width < 768 && 1); // Кнопка «Ещё» загружает 1 карточку.
+
+  ///??????
+  const [newCard, setNewCard] = useState(numberMoviesAdd); //// колличество новых фильмов - кнопка Еще ///??????
+
+  const [value, setValue] = useLocalStorage("serach_value", "") // для  input по поиску
+  const [valueSave, setValueSave] = useLocalStorage("serach_value_save", ""); // для  input по поиску
+
   function signOut() { // функция выхода
     localStorage.removeItem("jwt");
+    // localStorage.clear();
     localStorage.removeItem("save_movies_action");
+    console.log('save_movies_action')
     localStorage.removeItem("movies_action");
     setCurrentUser({ name: '', email: '' });
     setValueSave('');
@@ -123,62 +172,6 @@ function App() {
     setMovies([]);
     setMoviesAction([]);
     history.push('/');
-  }
-
-  // Изменение информации о пользователе
-  function handleUpdateUser({ name, email }) {
-    localStorage.getItem("jwt");
-    setIsLoading(true);
-    api.patchUserInfo(name, email)
-      .then(
-        (res) => {
-          setCurrentUser({ _id: res._id, name: res.name, email: res.email });
-          setIsLoading(false);
-        })
-      .catch((event) => {
-        console.log(`Ошибка в изменении данных пользователя: ${event}`);
-        setIsLoading(false);
-      });
-  };
-
-  // Функция лайка карточки //
-  function handleMovieLike(movie) {
-    return saveMoviesAction.some((savedMovie) => savedMovie.movieId === movie.movieId);
-  };
-
-  // Сеттер хранения фильмов//
-  const [movies, setMovies] = useLocalStorage("all_movies", []);
-
-  // Сохраненные фильмы в локалсторидж //
-  const [saveMoviesAction, setSaveMoviesAction] = useLocalStorage(
-    "save_movies_action",
-    []
-  );
-
-  // Ошибка поиска
-  const [showError, setShowError] = useState("");
-  ///////////////////////////////////////////////////////
-
-  // Хук width следит за шириной экрана
-  const { width } = useWindowSize();
-
-  // Количество отображаемых карточек
-  const counterCard =
-    (width >= 1280 && 12) ||  // 12 карточек по 3 в ряд
-    (width >= 768 && width < 1280 && 8) ||  // 8 карточек по 2 в ряд
-    (width >= 320 && width < 768 && 5) //  5 карточек по 1 в ряд
-
-  // Добавление карточек для ряда
-  const numberMoviesAdd =
-    (width >= 1280 && 3) || // Кнопка «Ещё» загружает по 3 карточки.
-    (width >= 768 && width < 1280 && 2) || // Кнопка «Ещё» загружает по 2 карточки.
-    (width >= 320 && width < 768 && 1) // Кнопка «Ещё» загружает 1 карточку.
-
-  const [newCard, setNewCard] = useState(numberMoviesAdd); //// колличество новых фильмов - кнопка Еще
-
-  // Добавление новых фильмов через кнопку Еще //
-  function addedNewCard() {
-    setNewCard(prevState => prevState + numberMoviesAdd);
   };
 
   const showAllMovies = async () => {
@@ -214,8 +207,16 @@ function App() {
   // Взятие фильмов пользователя //
   const takeFilm = async () => {
     const res = await api.getAllMovies();
+    console.log(res)
     setSaveMoviesAction(res)
   }
+
+  // Функция для сохранения фильма для Сохранненые фильмы//
+  const addedMovie = async (movie) => {
+    console.log(movie)
+    await api.createMovie(movie);
+    takeFilm()
+  };
 
   // Функция удаления фильма из Сохранненых фильмов //
   const removeMovie = async (movie) => {
@@ -225,14 +226,7 @@ function App() {
     takeFilm();
   };
 
-  // Функция для сохранения фильма для Сохранненые фильмы//
-  const addedMovie = async (movie) => {
-    console.log(movie)
-    await api.createMovie(movie);
-    takeFilm()
-  };
-  
-    // useEffect(() => {
+  // useEffect(() => {
   //   takeFilm();
   // }, [isLoading]);
 
@@ -240,6 +234,11 @@ function App() {
     if (loggedIn) showAllMovies();
     setShowError('');
   }, [loggedIn]);
+
+  // тумблер настройки выборки карточек менее 40 мин = короткометражки//
+  const showShortMovies = (moviesLitle) => {
+    return moviesLitle?.filter((i) => i.duration <= 40);
+  };
 
   // Поиск фильмов, перевод в маленькие буквы //
   const findByNameFilm = (movies, value) => {
@@ -254,7 +253,6 @@ function App() {
 
   // search по карточкам в Фмльме
   const submitSearchNameFilm = (value) => {
-    console.log(value)
     showAllMovies();
     setMoviesAction(findByNameFilm(movies, value));
   };
@@ -267,11 +265,20 @@ function App() {
     setSaveMoviesAction(findByNameFilm(res, value));
   };
 
-  // тумблер настройки выборки карточек менее 40 мин = короткометражки//
-  const showShortMovies = (moviesLitle) => {
-    return moviesLitle?.filter((i) => i.duration <= 40);
+  //колличество новых добавляемых карточек
+  const [newItem, setNewItem] = useState(numberMoviesAdd);  ///??????
+
+  // Добавление новых фильмов через кнопку Еще //
+  function addedNewCard() {
+    setNewCard(newItem + numberMoviesAdd);
+    // setNewCard(prevState => prevState + numberMoviesAdd);
   };
 
+
+  // Функция лайка карточки //
+  function handleMovieLike(movie) {
+    return saveMoviesAction.some((savedMovie) => savedMovie.movieId === movie.movieId);
+  };
 
   return (
     <IngredientsContext.Provider value={currentUser}>
@@ -319,6 +326,7 @@ function App() {
             counterCard={counterCard}
             movies={moviesAction}
             showShortMovies={showShortMovies}
+            // showAllMovies={showAllMovies}
             addedMovie={addedMovie}
             handleMovieLike={handleMovieLike}
             value={value}
@@ -361,4 +369,14 @@ function App() {
   );
 }
 
+App.propTypes = {
+  data: PropTypes.shape({
+    year: PropTypes.number.isRequired,
+    countryText: PropTypes.string.isRequired,
+    trailerLink: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string.isRequired,
+  }),
+}
+
 export default App;
+

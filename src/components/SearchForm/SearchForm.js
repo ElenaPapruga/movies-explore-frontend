@@ -14,9 +14,10 @@ function SearchForm(props) {
               props.setShowError("");
             }}
           />
-          <button className="search__button"
+          <button className="search__button"          
             onClick={(event) => {
               event.preventDefault()
+              // props.showAllMovies();
               props.submitSearchNameFilm(props.value);
             }}
           ></button>

@@ -69,7 +69,7 @@ function Profile(props) {
       <Header loggedIn={props.loggedIn} />
       <section className="profile">
         <div className="profile__container">
-          <h3 className="profile__wellcome">{`Привет, Друг`}</h3>
+          <h3 className="profile__wellcome">Привет, Друг!</h3>
           <form
             className="profile__edit-form"
             onSubmit={handleSubmit}>
